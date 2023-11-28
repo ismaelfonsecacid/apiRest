@@ -1,0 +1,8 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "API-REST",
+  "main": "index.js",
+  "author": "Ismael Fonseca Cid <ismanoallaps4@gmail.com>",
+  "license": "MIT"
+}
