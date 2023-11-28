@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "Ismael Fonseca Cid <ismanoallaps4@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "mongoose": "^8.0.1"
   }
