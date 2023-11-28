@@ -4,5 +4,8 @@
   "description": "API-REST",
   "main": "index.js",
   "author": "Ismael Fonseca Cid <ismanoallaps4@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^8.0.1"
+  }
 }
