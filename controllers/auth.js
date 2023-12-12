@@ -1,11 +1,24 @@
+const User = require("../models/user")
+
 function register(req, res) {
-    // Agrega el mensaje al cuerpo de la respuesta
-    const responseMessage = "Hola has llegado";
+    const {firstname,lastname,email,password} = req.body
 
-    console.log("Se ha ejecutado el registro");
+    if(!email) res.status(400).send({msg:"Email necesario"})
+    if(!password) res.status(400).send({msg:"Password necesaria"})
+    console.log(req.body);
 
-    // Envía la respuesta al cliente con el mensaje agregado
-    res.status(200).send(`${responseMessage} - Todo okardo`);
+    const user = new User({
+        firstname,
+        lastname,
+        email: email.toLowerCase(),
+        password,
+        role:"user",
+        active:false
+    })
+
+    console.log(user);
+
+    res.status(200).send({msg:"Todo correcto"})
 }
 
 module.exports = {
