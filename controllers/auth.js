@@ -5,9 +5,10 @@ function register(req, res) {
     console.log("Se ha ejecutado el registro");
 
     // Envía la respuesta al cliente con el mensaje agregado
-    res.status(200).send({ msg: "Todo okardo", additionalMsg: responseMessage });
+    res.status(200).send(`${responseMessage} - Todo okardo`);
 }
 
 module.exports = {
     register,
 }
+
