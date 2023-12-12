@@ -57,8 +57,28 @@ async function login (req,res){
   }
 }
 
+async function refreshAccessToken(req, res) {
+  const { token } = req.body;
+  try {
+    //verificación de token
+    if (!token) res.status(400).send({ msg: "Token requerido" });
+ 
+    const { user_id } = jwt.decoded(token);
+ 
+    //Búsqueda de usuario
+    const response = await User.findOne({ _id: user_id });
+ 
+    res.status(200).send({
+      accessToken: jwt.createAccessToken(response),
+    });
+ 
+  } catch (error) {
+    res.status(500).send({ msg: "Error del servidor" });
+  }
+}
  
 module.exports = {
   register,
-  login
+  login,
+  refreshAccessToken
 };
