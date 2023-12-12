@@ -19,5 +19,6 @@ const connectDB = async () => {
   // Lanzar la aplicación
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+    console.log(`Servidor escuchando en http://${IP_SERVER}:${PORT}/api/${API_VERSION}`);
   });
   connectDB()
