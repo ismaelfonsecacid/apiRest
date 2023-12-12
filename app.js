@@ -6,7 +6,7 @@ const app = express();
 
 // Ruta para mostrar un mensaje "Hola"
 app.get('/', (req, res) => {
-  res.send('Hola, pa cuando WORK ADRI');
+  res.send('PA CUANDO TRABAJO PORFABO');
 });
 
 
