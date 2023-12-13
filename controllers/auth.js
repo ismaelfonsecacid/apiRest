@@ -15,7 +15,6 @@ async function register(req, res) {
     role: "user",
     active: false
   });
- 
   const salt = bcrypt.genSaltSync(10);
   const hashPassword = bcrypt.hashSync(password, salt);
   user.password = hashPassword;
