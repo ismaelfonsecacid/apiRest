@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const image = require("../utils/image");
+const fs = require("fs")
 
 async function getMe(req, res) {
   const { user_id } = req.user;
@@ -76,9 +77,22 @@ async function updateUser(req, res) {
   }
 }
 
+async function deleteUser(req,res){
+    const { id } = req.params;
+    try {
+        const response = await User.findByIdAndDelete(id)
+        if(response.avatar){
+            fs.unlinkSync(`./uploads/${response.avatar}`)
+        }
+        res.status(200).send({ msg: "Usuario eliminado" });
+    } catch (error) {
+        res.status(400).send({ msg: "Error al eliminar el usuario" });
+    }
+}
 module.exports = {
   getMe,
   getUsers,
   createUser,
   updateUser,
+  deleteUser
 };
