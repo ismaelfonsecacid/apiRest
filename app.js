@@ -1,22 +1,21 @@
-const express = require('express');
-const bodyParser = require("body-parser")
-const cors = require("cors")
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const { API_VERSION } = require("./constants");
 const app = express();
 
 // Ruta para mostrar un mensaje "Hola"
-app.get('/', (req, res) => {
-  res.send('PA CUANDO TRABAJO PORFABO');
+app.get("/", (req, res) => {
+  res.send("PA CUANDO TRABAJO PORFABO");
 });
 
-
 //Import rutas
-const authRoutes = require("./router/auth")
-const userRoutes = require("./router/user")
-
+const authRoutes = require("./router/auth");
+const userRoutes = require("./router/user");
+const menuRoutes = require("./router/menu");
 
 //Configurar body parser
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //Configure static folder
@@ -26,8 +25,8 @@ app.use(express.static("uploads"));
 app.use(cors());
 
 //Configure routings
-app.use(`/api/${API_VERSION}`,authRoutes)
-app.use(`/api/${API_VERSION}`,userRoutes)
-
+app.use(`/api/${API_VERSION}`, authRoutes);
+app.use(`/api/${API_VERSION}`, userRoutes);
+app.use(`/api/${API_VERSION}`, menuRoutes);
 
 module.exports = app;
