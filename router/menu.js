@@ -6,6 +6,8 @@ const api = express.Router();
 
 api.post("/menu",[md_auth.asureAuth], MenuController.createMenu)
 api.get("/menu",[md_auth.asureAuth], MenuController.getMenu)
+api.patch("/menu/:id",[md_auth.asureAuth], MenuController.updateMenu)
+api.delete("/menu/:id",[md_auth.asureAuth], MenuController.deleteMenu)
 
 
 
