@@ -1,3 +1,4 @@
+const { log } = require("console");
 const Course = require("../models/course");
 const image = require("../utils/image");
 const fs = require('fs').promises; // Assuming you're using Node.js >= 10.0.0
@@ -63,11 +64,35 @@ async function updateCourse(req, res) {
   }
 }
 
+async function deleteCourse(req, res) {
+  const { id } = req.params;
+
+  try {
+    const courseToDelete = await Course.findById(id);
+
+    // If the course exists, delete its associated miniature file
+    if (courseToDelete) {
+      if (courseToDelete.miniature) {
+        const imagePath = `./uploads/${courseToDelete.miniature}`;
+        await fs.unlink(imagePath);
+      }
+      await Course.findByIdAndDelete(id);
+      res.status(200).send({ msg: "Course eliminado" });
+    } else {
+      res.status(404).send({ msg: "Course no encontrado" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ msg: "Error al eliminar el Course" });
+  }
+}
+
 
 
 
 module.exports = {
   createCourse,
   getCourses,
-  updateCourse
+  updateCourse,
+  deleteCourse
 };
