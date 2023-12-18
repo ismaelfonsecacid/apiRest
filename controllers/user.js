@@ -1,32 +1,64 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
-const image = require("../utils/image");
-const fs = require("fs").promises;
+const { Storage } = require("@google-cloud/storage");
+const {env} = require("../constants")
+
+const dotenv = require('dotenv');
+dotenv.config();
+try {
+  require('dotenv').config();
+} catch (err) {
+  console.error('Error cargando dotenv:', err);
+}
+
+
+const credentials = {
+  client_email: process.env.GOOGLE_CLIENT_EMAIL,
+  private_key: process.env.GOOGLE_PRIVATE_KEY
+};
+
+const storage = new Storage({
+  projectId: "apirest-408512", // Reemplaza con el ID de tu proyecto
+  credentials: credentials,
+});
+
+const bucket = storage.bucket("apirest-isma"); // Reemplaza con el nombre de tu cubo
+
+const multer = require("multer");
+const multerStorage = multer.memoryStorage();
+const upload = multer({ storage: multerStorage });
 
 async function getMe(req, res) {
   const { user_id } = req.user;
 
-  const response = await User.findById(user_id);
-
-  if (!response) {
-    res.status(400).send({ msg: "No se ha encontrado usuario" });
-  } else {
-    res.status(200).send(response);
+  try {
+    const response = await User.findById(user_id);
+    if (!response) {
+      res.status(404).send({ msg: "Usuario no encontrado" });
+    } else {
+      res.status(200).send(response);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ msg: "Error en el servidor" });
   }
 }
 
 async function getUsers(req, res) {
   const { active } = req.query;
 
-  let response = null;
-
-  if (active == undefined) {
-    response = await User.find();
-  } else {
-    response = await User.find({ active });
+  try {
+    let response = null;
+    if (active == undefined) {
+      response = await User.find();
+    } else {
+      response = await User.find({ active });
+    }
+    res.status(200).send(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ msg: "Error en el servidor" });
   }
-
-  res.status(200).send(response);
 }
 
 async function createUser(req, res) {
@@ -35,19 +67,17 @@ async function createUser(req, res) {
   const hashPassword = bcrypt.hashSync(password, salt);
   const user = new User({ ...req.body, active: false, password: hashPassword });
 
-  if (req.files.avatar) {
-    const imageName = image.getFileName(req.files.avatar);
-    user.avatar = imageName;
+  try {
+    if (req.file) {
+      const fileName = await uploadToStorage(req.file);
+      user.avatar = fileName;
+    }
+    const userStored = await user.save();
+    res.status(200).send(userStored);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ msg: "Error en el proceso de usuario" });
   }
-
-  user
-    .save()
-    .then((userStored) => {
-      res.status(200).send(userStored);
-    })
-    .catch((error) => {
-      res.status(400).send({ msg: "Error en el proceso de usuario" });
-    });
 }
 
 async function updateUser(req, res) {
@@ -55,7 +85,6 @@ async function updateUser(req, res) {
   const userData = req.body;
 
   try {
-    // Password
     if (userData.password) {
       const salt = bcrypt.genSaltSync(10);
       const hashPassword = bcrypt.hashSync(userData.password, salt);
@@ -64,43 +93,78 @@ async function updateUser(req, res) {
       delete userData.password;
     }
 
-    // Avatar
-    if (req.files.avatar) {
-      const imagePath = image.getFileName(req.files.avatar);
-
-      // Delete the old avatar file if it exists
+    if (req.file) {
+      const fileName = await uploadToStorage(req.file);
       const oldUser = await User.findById(id);
+
       if (oldUser.avatar) {
-        const oldImagePath = `./uploads/${oldUser.avatar}`;
-        await fs.unlink(oldImagePath);
+        await deleteFromStorage(oldUser.avatar);
       }
-      userData.avatar = imagePath;
+
+      userData.avatar = fileName;
     }
 
-    const response = await User.findByIdAndUpdate({ _id: id }, userData);
+    const response = await User.findByIdAndUpdate(id, userData);
     if (!response) {
-      res.status(400).send({ msg: "Error al actualizar el usuario" });
+      res.status(404).send({ msg: "Usuario no encontrado" });
     } else {
-      res.status(200).send({ msg: "Actualizacion correcta" });
+      res.status(200).send({ msg: "Actualización correcta" });
     }
   } catch (error) {
-    console.error(error); // Log the error for debugging purposes
+    console.error(error);
     res.status(500).send({ msg: "Error en el servidor" });
   }
 }
 
 async function deleteUser(req, res) {
   const { id } = req.params;
+
   try {
-    const response = await User.findByIdAndDelete(id);
-    if (response.avatar) {
-      fs.unlinkSync(`./uploads/${response.avatar}`);
+    const user = await User.findByIdAndDelete(id);
+
+    if (user.avatar) {
+      await deleteFromStorage(user.avatar);
     }
+
     res.status(200).send({ msg: "Usuario eliminado" });
   } catch (error) {
-    res.status(400).send({ msg: "Error al eliminar el usuario" });
+    console.error(error);
+    res.status(500).send({ msg: "Error en el servidor" });
   }
 }
+
+async function uploadToStorage(file) {
+  return new Promise((resolve, reject) => {
+    const fileName = `avatar/${Date.now()}_${file.originalname}`;
+    const fileUpload = bucket.file(fileName);
+    const stream = fileUpload.createWriteStream({
+      metadata: {
+        contentType: file.mimetype,
+      },
+    });
+
+    stream.on("error", (error) => {
+      console.error(error);
+      reject(new Error("Error al subir la imagen a Google Cloud Storage"));
+    });
+
+    stream.on("finish", () => {
+      resolve(fileName);
+    });
+
+    stream.end(file.buffer);
+  });
+}
+
+async function deleteFromStorage(fileName) {
+  try {
+    await bucket.file(fileName).delete();
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error al eliminar la imagen de Google Cloud Storage");
+  }
+}
+
 module.exports = {
   getMe,
   getUsers,
