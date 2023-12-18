@@ -1,4 +1,4 @@
 node_modules/
 .env
-
+google.json
 package-lock.json
