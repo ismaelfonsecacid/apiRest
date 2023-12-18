@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const image = require("../utils/image");
-const fs = require("fs")
+const fs = require("fs").promises;
 
 async function getMe(req, res) {
   const { user_id } = req.user;
@@ -54,45 +54,57 @@ async function updateUser(req, res) {
   const { id } = req.params;
   const userData = req.body;
 
-  // Password
-  if (userData.password) {
-    const salt = bcrypt.genSaltSync(10);
-    const hashPassword = bcrypt.hashSync(userData.password, salt);
-    userData.password = hashPassword
-  } else {
-    delete userData.password;
-  }
+  try {
+    // Password
+    if (userData.password) {
+      const salt = bcrypt.genSaltSync(10);
+      const hashPassword = bcrypt.hashSync(userData.password, salt);
+      userData.password = hashPassword;
+    } else {
+      delete userData.password;
+    }
 
-  // Avatar
-  if(req.files.avatar){
-    const imagePath = image.getFileName(req.files.avatar)
-    userData.avatar = imagePath
-  }
+    // Avatar
+    if (req.files.avatar) {
+      const imagePath = image.getFileName(req.files.avatar);
 
-  const response = await User.findByIdAndUpdate({ _id: id }, userData);
-  if (!response) {
-    res.status(400).send({ msg: "Error al actualizar el usuario" });
-  } else {
-    res.status(200).send({ msg: "Actualizacion correcta" });
+      // Delete the old avatar file if it exists
+      const oldUser = await User.findById(id);
+      if (oldUser.avatar) {
+        const oldImagePath = `./uploads/${oldUser.avatar}`;
+        await fs.unlink(oldImagePath);
+      }
+      userData.avatar = imagePath;
+    }
+
+    const response = await User.findByIdAndUpdate({ _id: id }, userData);
+    if (!response) {
+      res.status(400).send({ msg: "Error al actualizar el usuario" });
+    } else {
+      res.status(200).send({ msg: "Actualizacion correcta" });
+    }
+  } catch (error) {
+    console.error(error); // Log the error for debugging purposes
+    res.status(500).send({ msg: "Error en el servidor" });
   }
 }
 
-async function deleteUser(req,res){
-    const { id } = req.params;
-    try {
-        const response = await User.findByIdAndDelete(id)
-        if(response.avatar){
-            fs.unlinkSync(`./uploads/${response.avatar}`)
-        }
-        res.status(200).send({ msg: "Usuario eliminado" });
-    } catch (error) {
-        res.status(400).send({ msg: "Error al eliminar el usuario" });
+async function deleteUser(req, res) {
+  const { id } = req.params;
+  try {
+    const response = await User.findByIdAndDelete(id);
+    if (response.avatar) {
+      fs.unlinkSync(`./uploads/${response.avatar}`);
     }
+    res.status(200).send({ msg: "Usuario eliminado" });
+  } catch (error) {
+    res.status(400).send({ msg: "Error al eliminar el usuario" });
+  }
 }
 module.exports = {
   getMe,
   getUsers,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
 };
