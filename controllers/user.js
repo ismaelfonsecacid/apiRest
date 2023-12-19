@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { Storage } = require("@google-cloud/storage");
-const {env} = require("../constants")
+
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -14,7 +14,7 @@ try {
 
 const credentials = {
   client_email: process.env.GOOGLE_CLIENT_EMAIL,
-  private_key: process.env.GOOGLE_PRIVATE_KEY
+  private_key: "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDmRSVxk/HORP7i\nqTdlPOPHju1JKkYCjzVJzRbt8MMUH6UmQp3bUWYxEGd8gMJ4qAj/SpZ9/ALC02ds\nCtMQUt/pyD03CAyFZQi03t0dqVD1YK0yRy6YOr8z6zFoV8oPcBbPlCm0jtXbHpaD\nh121lt8UN0UjX2a5tqp4GL4FfiPoPTLVR8dafUbxIbALeJs8fbi1jYyutWuO0Nz7\nC41GNNfbHXGF/cp/qJGdVCfEvRrKjuCsiPvOQQS9kefoVM+X/CC/cYiHtAsXeu+E\nZYwdtm2q5qvxfiYzEP1h1tT4/vhJ1tORuttVp7H6qqui4qR8zaVmNdM70ywWwJQv\nL4T5XM/9AgMBAAECgf8wkmVTj+FxoRwis477y9xAO+XRiRk7cPnMl3Y+uoprtEEh\n0Ot7V7A2qT8rA/4BdXBwaUtVR9NNRUqLf70FtHWG2rYO5aO+f5FWlawOlah+GeZu\ntJUfh0TNrs69M8drejlVj+s8KuTxU4JsPCGILErh+Macr4L7qYxLyOxMPE9WrSuQ\nNT/pCfEMIOPeizTpqrPr5pEaS2PKqXfAD3jt003vjXUV1frX/EodhBlOSsqs2Yqh\nS7R6qQ1zqqrC7mXbQut3fI9mKtUI1o4rq+HhT8GlAmnNu0IisSPQsfASOybjgDCf\nNUZs6DpF6dmjZAbSR2priXd3gb3zSr6xyKxjS+kCgYEA+s2cSj98Z/jOq7SH4Ix7\nhQp6djShh/Te3tGB4i4yv+sCMq6Sgj6bWe0WwA8t2H+tQpcd+5XC4MQP8Rkpl5Jl\n+Gg5S7NtOyvGq3VCxzLGp4am5A856o8jiJQUhfT1+GU+FpU2lo1B1ynlRLk0QroX\naBd7N1kcS392j18NpYA0hAcCgYEA6wqeJzYUiTpcy3YRjdtGZQcHSpvroNKWsFsu\nifVpSHpEDGj977L+XSLwib0v+1YP/11M98524RKK4dESwoJ2CHG82dDT8CYn/Ogi\nhKxjRlmB4HlIrgx1oc6KlzwfpUBRQSVL3jlPy70joe1HrJtWTPThEmLXEpJjKs2g\nIQeFstsCgYEAknd7G31B6PJLt8jhRUilZge9hsSrxNtDQLr3cCBssNnM2c5Lb1ai\noPytuZHjwzik9WuNLfzC50J40ONR/9uWQ2CSfVwWoWSqTD1Ztz02+GTRmAQwXYQk\nS0G3TpfFAcAWZ1fSnk92MPKdmunR1FobC0YTRjp7JLgWhBoNvSZHBQcCgYBpd/o/\n3iSY73d0VSbLYPnVm7HJ6O1y3QyBVmkrvtPfkf23E+XfCZLaeDM3m41MWvISxOsk\nx6DQnmFzsz2XyrLsVx1HIE36FSUcd44FutVRXBjLgaD7eNvQH75Q3snUfWf4s6O3\ntD/6TIUQxEjFS28OWVQly/R2gPm+20Zfi+CSwQKBgGoUahdtuj1SY6dbfysCMDIv\nth5a/ngX+uCTL15UYVo7uEbpx2R2aTt61PYnEeSkIPKSTkoXOs5BNQwyOnr328p+\nXw3kLPKkghD4g8R9vCHt0MnvxPFZDCc+QFbmL6ba9mYdc49mtdAAnNiwSxTDLB0t\nJj8sABLf5+pwO48+RjjD\n-----END PRIVATE KEY-----\n"
 };
 
 const storage = new Storage({
