@@ -5,12 +5,17 @@ const CourseController = require("../controllers/course")
 const md_auth = require("../middlewares/authenticated");
 
 const md_upload = multiparty({uploadDir:"./uploads/course"})
+const multer = require('multer');
+
+
+const multerStorage = multer.memoryStorage();
+const upload = multer({ storage: multerStorage });
 const api = express.Router();
 
 
-api.post("/course",[md_auth.asureAuth,md_upload],CourseController.createCourse)
+api.post("/course",[md_auth.asureAuth,upload.single('miniature')],CourseController.createCourse)
 api.get("/courses",CourseController.getCourses)
-api.patch("/courses/:id",[md_auth.asureAuth,md_upload],CourseController.updateCourse)
+api.patch("/courses/:id",[md_auth.asureAuth,upload.single('miniature')],CourseController.updateCourse)
 api.delete("/courses/:id",[md_auth.asureAuth,md_upload],CourseController.deleteCourse)
 
 
