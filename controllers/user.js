@@ -1,8 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { Storage } = require("@google-cloud/storage");
-
-
 const dotenv = require('dotenv');
 dotenv.config();
 try {
@@ -10,23 +8,20 @@ try {
 } catch (err) {
   console.error('Error cargando dotenv:', err);
 }
-
-
 const credentials = {
   client_email: process.env.GOOGLE_CLIENT_EMAIL,
   private_key: process.env.GOOGLE_PRIVATE_KEY
 };
-console.log(process.env.GOOGLE_PRIVATE_KEY);
 const storage = new Storage({
   projectId: "apirest-408512", // Reemplaza con el ID de tu proyecto
   credentials: credentials,
 });
-
 const bucket = storage.bucket("apirest-isma"); // Reemplaza con el nombre de tu cubo
-
 const multer = require("multer");
 const multerStorage = multer.memoryStorage();
 const upload = multer({ storage: multerStorage });
+
+
 
 async function getMe(req, res) {
   const { user_id } = req.user;
