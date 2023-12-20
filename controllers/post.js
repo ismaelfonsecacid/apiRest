@@ -21,9 +21,8 @@ const multerStorage = multer.memoryStorage();
 const upload = multer({ storage: multerStorage });
 
 
-
 async function createPost(req, res){
-  
+  console.log("fds");
   try {
       const post = new Post(req.body);
       post.created_at = new Date();
