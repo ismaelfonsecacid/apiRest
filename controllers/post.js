@@ -23,10 +23,10 @@ const upload = multer({ storage: multerStorage });
 
 
 async function createPost(req, res){
-    const post = new Post(req.body);
-    post.created_at = new Date();
-
-    try {
+  
+  try {
+      const post = new Post(req.body);
+      post.created_at = new Date();
       console.log(req.file);
         if (req.file) {
           const fileName = await uploadToStorage(req.file);
