@@ -11,7 +11,7 @@ const multerStorage = multer.memoryStorage();
 const upload = multer({ storage: multerStorage });
 
 // Define your route with the multer middleware
-router.post('/post', [md_auth.asureAuth, upload.single('avatar')], PostController.createPost);
+router.post('/post', [md_auth.asureAuth, upload.single('miniature')], PostController.createPost);
 router.get('/posts', PostController.getPosts);
 
 module.exports = router;
