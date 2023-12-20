@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const PostSchema = mongoose.Schema({
   title:String,
-  miniature: String,     // optional
+  miniature: String,     
   content: String,
   path: {
     type: String,
