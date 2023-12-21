@@ -350,6 +350,100 @@ app.get("/api/v1", (req, res) => {
           </tr>
         </table>
       </div>
+      <div class="endpoint-section">
+        <div class="top">
+          <h1>Auth</h1>
+          <button onclick="toggleEndpoints('auth_endpoints')" class="button-39">
+            Toggle Endpoints
+          </button>
+        </div>
+      
+        <table class="endpoint-block auth_endpoints" style="display: none">
+          <tr>
+            <th>HTTP Method</th>
+            <th>Endpoint</th>
+            <th>Description</th>
+          </tr>
+  
+          <tr>
+            <td><span class="postT">Post</span></td>
+            <td>/auth/register</td>
+            <td>Register an user.</td>
+          </tr>
+          <tr>
+            <td><span class="postT">Post</span></td>
+            <td>/auth/login</td>
+            <td>Login.</td>
+          </tr>
+          <tr>
+            <td><span class="postT">Post</span></td>
+            <td>/auth/refresh_access_token</td>
+            <td>Refresh the access token.</td>
+          </tr>
+        </table>
+      </div>
+  
+      <div class="endpoint-section">
+        <div class="top">
+          <h1>Post</h1>
+          <button onclick="toggleEndpoints('post_endpoints')" class="button-39">
+            Toggle Endpoints
+          </button>
+        </div>
+      
+        <table class="endpoint-block post_endpoints" style="display: none">
+          <tr>
+            <th>HTTP Method</th>
+            <th>Endpoint</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><span class="postT">POST</span></td>
+            <td>/post</td>
+            <td>
+              <div class="info">
+                <div>
+                  <span>Create a new post.</sp>
+                  <button onclick="showInfo('postInfo')">Info</button>
+                </div>
+                <div class="endpoint-section-2">
+                  <div id="postInfo" style="display: none">
+                    <pre class="code-container">
+                      <code class="language-javascript">
+  const PostSchema = mongoose.Schema({
+    title:String,
+    miniature: String,     
+    content: String,
+    path: {
+      type: String,
+      unique:true,
+    }  ,
+    created_at: Date,
+  })
+                      </code> 
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><span class="getT">GET</span></td>
+            <td>/post</td>
+            <td>Get all menus.</td>
+          </tr>
+          <tr>
+            <td><span class="patchT">PATCH</span></td>
+            <td>/post/:id</td>
+            <td>Update a post by ID.</td>
+          </tr>
+          <tr>
+            <td><span class="deleteT">DELETE</span></td>
+            <td>/post/:id</td>
+            <td>Delete a post by ID.</td>
+          </tr>
+        </table>
+      </div>
         <script>
           function showInfo(path) {
             const userInfoDiv = document.getElementById(path);
