@@ -21,8 +21,6 @@ function getPosts(req, res) {
   });
 }
 
-
-
 async function createPost(req, res) {
   const post = new Post(req.body);
 
