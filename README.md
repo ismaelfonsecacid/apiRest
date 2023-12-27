@@ -2,6 +2,13 @@
 
 Este repositorio contiene una API REST desarrollada en Node.js y Express para gestionar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en una base de datos MongoDB. La API también incluye funcionalidades para el manejo de archivos utilizando Google Cloud Storage.
 
+# Tecnologías Utilizadas
+
+- **Node.js:** Entorno de ejecución para JavaScript del lado del servidor.
+- **Express:** Framework web para Node.js que simplifica el desarrollo de aplicaciones y APIs.
+- **MongoDB:** Base de datos NoSQL utilizada para almacenar y gestionar los datos de la aplicación.
+- **Google Cloud Storage:** Servicio de almacenamiento en la nube de Google, utilizado para guardar imágenes.
+
 ## Dependencias
 
 A continuación se enumeran las principales dependencias utilizadas en este proyecto:
