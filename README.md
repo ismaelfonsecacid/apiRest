@@ -1,5 +1,11 @@
 # API REST con Node.js y Express
 
+1. [Introducción](#introducción)
+2. [Tecnologías Utilizadas](#tecnologías-utilizadas)
+3. [Dependencias](#dependencias)
+4. [Endpoints](#endpoints)
+5. [Middlewares de Autenticación](#middlewares-de-autenticación)
+
 Este repositorio contiene una API REST desarrollada en Node.js y Express para gestionar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) en una base de datos MongoDB. La API también incluye funcionalidades para el manejo de archivos utilizando Google Cloud Storage.
 
 # Tecnologías Utilizadas
