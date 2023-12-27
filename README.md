@@ -1,1 +1,3 @@
-<span style="color:blue">Título en azul</span>
+```html
+<span style="color:blue;">Título en azul</span>
+
