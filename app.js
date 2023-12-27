@@ -467,11 +467,6 @@ app.get("/api/v1", (req, res) => {
   res.send(apiDocumentation);
 });
 
-app.get("/",(res)=>{
-  const apiDocumentation = "Hola";
-  res.send(apiDocumentation);
-})
-
 //Import rutas
 const authRoutes = require("./router/auth");
 const userRoutes = require("./router/user");
