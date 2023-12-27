@@ -462,9 +462,7 @@ app.get("/api/v1", (req, res) => {
   
 
   `;
-
-  // Enviar la documentación de la API como respuesta
-  res.send(apiDocumentation);
+  // res.send(apiDocumentation);
 });
 
 //Import rutas
