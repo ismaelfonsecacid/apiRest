@@ -5,6 +5,7 @@ const { API_VERSION } = require("./constants");
 const app = express();
 
 app.get("/api/v1", (req, res) => {
+
   // Crear una documentación de API con estilo Swagger moderno
   const apiDocumentation = `
   <!DOCTYPE html>
@@ -375,11 +376,6 @@ app.get("/api/v1", (req, res) => {
             <td>/auth/login</td>
             <td>Login.</td>
           </tr>
-          <tr>
-            <td><span class="postT">Post</span></td>
-            <td>/auth/refresh_access_token</td>
-            <td>Refresh the access token.</td>
-          </tr>
         </table>
       </div>
   
@@ -470,6 +466,11 @@ app.get("/api/v1", (req, res) => {
   // Enviar la documentación de la API como respuesta
   res.send(apiDocumentation);
 });
+
+app.get("/",(res)=>{
+  const apiDocumentation = "Hola";
+  res.send(apiDocumentation);
+})
 
 //Import rutas
 const authRoutes = require("./router/auth");
