@@ -13,7 +13,7 @@ const upload = multer({ storage: multerStorage });
 const api = express.Router();
 
 
-api.post("/course",[md_auth.asureAuth,upload.single('miniature')],CourseController.createCourse)
+api.post("/courses",[md_auth.asureAuth,upload.single('miniature')],CourseController.createCourse)
 api.get("/courses",CourseController.getCourses)
 api.patch("/courses/:id",[md_auth.asureAuth,upload.single('miniature')],CourseController.updateCourse)
 api.delete("/courses/:id",[md_auth.asureAuth,md_upload],CourseController.deleteCourse)
