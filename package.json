@@ -6,7 +6,7 @@
   "author": "Ismael Fonseca Cid <ismanoallaps4@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "go": "node index.js",
+    "go1": "node index.js",
     "dev": "nodemon index.js"
   },
   "dependencies": {
