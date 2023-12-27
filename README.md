@@ -76,3 +76,16 @@ A continuación se enumeran las principales dependencias utilizadas en este proy
 | `/courses/:id`         | PATCH  | Actualiza la información de un curso por ID.   |
 | `/courses/:id`         | DELETE | Elimina un curso por ID.                         |
 
+
+En la API que he desarrollado, utilizo middlewares de autenticación para asegurar que ciertas rutas o endpoints requieran autorización antes de permitir el acceso o la ejecución de operaciones específicas. Esto se logra a través de la función `md_auth.asureAuth`, que lleva a cabo la verificación de la autenticación, probablemente mediante la validación de tokens JWT (JSON Web Tokens).
+
+### `md_auth.asureAuth`
+
+- **Propósito:** Garantizar que el usuario esté autenticado antes de permitir el acceso a ciertos endpoints.
+- **Cómo funciona:** Este middleware verifica la presencia y validez de un token JWT en la cabecera de la solicitud. Si el token es válido, se considera que el usuario está autenticado y se permite que la solicitud continúe; de lo contrario, se devuelve un error de autenticación.
+
+### `upload.single('avatar')` y `upload.single('miniature')`
+
+- **Propósito:** Gestionar la carga de archivos (avatar, miniature) en las solicitudes POST y PATCH.
+- **Cómo funciona:** Estos middlewares están asociados con la gestión de archivos y utilizan la función `multer` para manejar la carga de un solo archivo en las solicitudes. Aseguran que la solicitud contenga un archivo específico (avatar o miniature) antes de permitir que la operación continúe.
+
